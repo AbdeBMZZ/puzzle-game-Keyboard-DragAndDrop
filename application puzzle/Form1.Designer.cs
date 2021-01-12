@@ -45,8 +45,6 @@
             this.button9 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -80,7 +78,7 @@
             this.button8.TabIndex = 7;
             this.button8.Text = "8";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button11
             // 
@@ -89,7 +87,7 @@
             this.button11.Size = new System.Drawing.Size(70, 70);
             this.button11.TabIndex = 8;
             this.button11.UseVisualStyleBackColor = true;
-            this.button11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button11.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button7
             // 
@@ -100,7 +98,7 @@
             this.button7.TabIndex = 6;
             this.button7.Text = "7";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button6
             // 
@@ -111,7 +109,7 @@
             this.button6.TabIndex = 5;
             this.button6.Text = "6";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button5
             // 
@@ -122,7 +120,7 @@
             this.button5.TabIndex = 4;
             this.button5.Text = "5";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button4
             // 
@@ -133,7 +131,7 @@
             this.button4.TabIndex = 3;
             this.button4.Text = "4";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button3
             // 
@@ -144,7 +142,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "3";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button2
             // 
@@ -155,7 +153,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "2";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button1
             // 
@@ -166,7 +164,7 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.key_press);
+            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button_mouseDown);
             // 
             // button10
             // 
@@ -227,33 +225,11 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "To play please press Start";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Bahnschrift", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(108, 427);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(158, 14);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Use the keys w,s,a,d to move";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Bahnschrift", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(57, 427);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 16);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "guide :";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(538, 450);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -289,8 +265,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox timeBOX;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
     }
 }
 

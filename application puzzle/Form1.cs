@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections;
 
 namespace application_puzzle
 {
@@ -15,129 +15,23 @@ namespace application_puzzle
     {
         private Button emptyBtn = null;
         private int tik = 3600;
+        Size btnSize = new Size(70, 70);
+        Rectangle dragbox;
+        Button selectedBtn;
+        int rows = 3;
 
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private Button top()
-        {
-            foreach(Button btn in groupBox1.Controls)
-            {
-                if(btn.Location.X == emptyBtn.Location.X && btn.Location.Y == emptyBtn.Location.Y + emptyBtn.Size.Width)
-                {
-                    return btn;
-                }
-            }
-            return null;
-        }
-
-        void moveTop()
-        {
-            Button topBtn = top();
-            if (topBtn != null)
-            {
-                int bx;
-                int by;
-                bx = emptyBtn.Left;
-                by = emptyBtn.Top;
-                emptyBtn.Left = topBtn.Left;
-                emptyBtn.Top = topBtn.Top;
-                topBtn.Left = bx;
-                topBtn.Top = by;
-
-            }
-        }
-
-        private Button down()
-        {
+            shuffle();
             foreach (Button btn in groupBox1.Controls)
             {
-                if (btn.Location.X == emptyBtn.Location.X && btn.Location.Y == emptyBtn.Location.Y - emptyBtn.Size.Width)
-                {
-                    return btn;
-                }
-            }
-            return null;
-        }
-        void moveDown()
-        {
-            Button downBtn = down();
-            if (downBtn != null)
-            {
-                int bx;
-                int by;
-                bx = emptyBtn.Left;
-                by = emptyBtn.Top;
-                emptyBtn.Left = downBtn.Left;
-                emptyBtn.Top = downBtn.Top;
-                downBtn.Left = bx;
-                downBtn.Top = by;
-
+                if (btn.Text == "")
+                    emptyBtn = btn;
             }
 
-
+            checkWin();
         }
-
-        private Button left()
-        {
-            foreach (Button btn in groupBox1.Controls)
-            {
-                if (btn.Location.Y == emptyBtn.Location.Y && btn.Location.X == emptyBtn.Location.X + emptyBtn.Size.Width)
-                {
-                    return btn;
-                }
-
-            }
-            return null;
-        }
-        void moveLeft()
-        {
-            Button leftBtn = left();
-            if (leftBtn != null)
-            {
-                int bx;
-                int by;
-                bx = emptyBtn.Left;
-                by = emptyBtn.Top;
-                emptyBtn.Left = leftBtn.Left;
-                emptyBtn.Top = leftBtn.Top;
-                leftBtn.Left = bx;
-                leftBtn.Top = by;
-            }
-
-        }
-        private Button right()
-        {
-            foreach (Button btn in groupBox1.Controls)
-            {
-                if (btn.Location.Y == emptyBtn.Location.Y && btn.Location.X == emptyBtn.Location.X - emptyBtn.Size.Width)
-                {
-                    return btn;
-                }
-
-            }
-            return null;
-        }
-
-        void moveRight()
-        {
-            Button rightBtn = right();
-            if (rightBtn != null)
-            {
-                int bx;
-                int by;
-                bx = emptyBtn.Left;
-                by = emptyBtn.Top;
-                emptyBtn.Left = rightBtn.Left;
-                emptyBtn.Top = rightBtn.Top;
-                rightBtn.Left = bx;
-                rightBtn.Top = by;
-
-            }
-        }
-
 
         void shuffle()
         {
@@ -153,20 +47,20 @@ namespace application_puzzle
                     btn.Text = "";
                 }
             }
-            
+
         }
 
         public bool checkWin()
         {
             int counter = 0;
-            foreach(Button btn in groupBox1.Controls)
+            foreach (Button btn in groupBox1.Controls)
             {
-                if(btn.Left==0 && btn.Top == 91)
+                if (btn.Left == 0 && btn.Top == 91)
                 {
                     if (btn.Text == "1")
                         counter++;
                 }
-                if(btn.Left== 70 && btn.Top == 91)
+                if (btn.Left == 70 && btn.Top == 91)
                 {
                     if (btn.Text == "2")
                         counter++;
@@ -247,7 +141,7 @@ namespace application_puzzle
 
         public void enableBtns()
         {
-            foreach(Button btn in groupBox1.Controls)
+            foreach (Button btn in groupBox1.Controls)
             {
                 btn.Enabled = true;
             }
@@ -266,48 +160,11 @@ namespace application_puzzle
         private void Form1_Load(object sender, EventArgs e)
         {
             disableBtns();
-            shuffle();
-        }
-
-        private void key_press(object sender, KeyPressEventArgs e)
-        {
-            foreach (Button btn2 in groupBox1.Controls)
-            {
-
-                if (btn2.Text == "")
-                {
-                    emptyBtn = btn2;
-
-                    if (e.KeyChar == 'a')
-                    {
-                        moveLeft();
-                        break;
-                    }
-                    if (e.KeyChar == 'w')
-                    {
-                        moveTop();
-                        break;
-
-                    }
-                    if (e.KeyChar == 's')
-                    {
-                        moveDown();
-                        break;
-
-                    }
-                    if (e.KeyChar == 'd')
-                    {
-                        moveRight();
-                        break;
-
-                    }
-                }
-
-            }
         }
 
         private void reset_btn(object sender, EventArgs e)
         {
+            
             shuffle();
         }
 
@@ -322,6 +179,125 @@ namespace application_puzzle
             timer1.Enabled = true;
             enableBtns();
             tik = 3600;
+        }
+
+        private void button_mouseDown(object sender, MouseEventArgs e)
+        {
+            selectedBtn = sender as Button;
+            selectedBtn.MouseMove += new MouseEventHandler(this.button_mouseMove);
+
+            if (selectedBtn == down() || selectedBtn == up() || selectedBtn == left() || selectedBtn == right())
+            {
+                Size drag = SystemInformation.DragSize;
+                dragbox = new Rectangle(new Point(e.X - (drag.Width / 2), e.Y - (drag.Height / 2)), drag);
+            }
+
+            else
+                dragbox = Rectangle.Empty;
+
+        }
+        private void button_mouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                if (!dragbox.Contains(e.X, e.Y) && dragbox != Rectangle.Empty)
+                {
+                    DragDropEffects drop = groupBox1.DoDragDrop(selectedBtn, DragDropEffects.All | DragDropEffects.Link);
+                    swap(selectedBtn);
+                }
+            }
+        }
+
+
+
+        //finding buttons
+        Button left()
+        {
+            foreach (Button btn in groupBox1.Controls)
+            {
+                if (btn.Location.X == emptyBtn.Location.X + btnSize.Width && btn.Location.Y == emptyBtn.Location.Y)
+                    return btn;
+            }
+            return null;
+
+        }
+
+        Button right()
+        {
+            foreach (Button btn in groupBox1.Controls)
+            {
+                if (btn.Location.X == emptyBtn.Location.X - btnSize.Width && btn.Location.Y == emptyBtn.Location.Y)
+                    return btn;
+            }
+            return null;
+
+        }
+
+        Button up()
+        {
+            foreach (Button btn in groupBox1.Controls)
+            {
+                if (btn.Location.X == emptyBtn.Location.X && btn.Location.Y == emptyBtn.Location.Y + btnSize.Height)
+                    return btn;
+            }
+            return null;
+
+        }
+
+        Button down()
+        {
+            foreach (Button btn in groupBox1.Controls)
+            {
+                if (btn.Location.X == emptyBtn.Location.X && btn.Location.Y == emptyBtn.Location.Y - btnSize.Height)
+                    return btn;
+            }
+            return null;
+
+        }
+
+        //moving buttons
+
+        void moveRight()
+        {
+            if (emptyBtn.Location.X == 0)
+                return;
+
+            swap(right());
+
+        }
+
+        void moveLeft()
+        {
+            if (emptyBtn.Location.X == 0 + btnSize.Width * (rows - 1))
+                return;
+
+            swap(left());
+        }
+
+        void moveUp()
+        {
+            if (emptyBtn.Location.Y == 91 + btnSize.Height * (rows - 1))
+                return;
+
+            swap(up());
+
+        }
+
+        void moveDown()
+        {
+            if (emptyBtn.Location.Y == 91)
+                return;
+
+            swap(down());
+        }
+
+
+        //swaping buttons
+        void swap(Button btn)
+        {
+            Point xy = emptyBtn.Location;
+            emptyBtn.Location = btn.Location;
+            btn.Location = xy;
         }
     }
 }
